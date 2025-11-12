@@ -74,11 +74,13 @@
             <a href="edit.html" th:href="@{/books/edit(id=*{id})}">Edit</a>
         </td>
         <td>
-            <button type="button"
-                    class="delete-btn"
-                    th:onclick="|deleteBook(${book.id})|">
+            <form th:action="@{/books/delete(id=${book.id})}" method="post" style="display: inline;">
+                <button type="submit"
+                        class="delete-btn"
+                        th:onclick="|return confirm('Are you sure you want to delete')|">
                 Delete
-            </button>
+                </button>
+            </form>
         </td>
     </tr>
     </tbody>

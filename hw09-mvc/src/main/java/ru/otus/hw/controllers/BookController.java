@@ -3,7 +3,6 @@ package ru.otus.hw.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -82,7 +81,7 @@ public class BookController {
         return "redirect:/home";
     }
 
-    @DeleteMapping("books")
+    @PostMapping("books/delete")
     public String deleteBook(@RequestParam("id") long id) {
         bookService.deleteById(id);
         return "redirect:/home";
