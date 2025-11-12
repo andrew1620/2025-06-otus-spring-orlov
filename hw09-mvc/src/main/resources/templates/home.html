@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Home</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .title {
+            text-align: center;
+        }
+
+        .entityTable {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .entityTable tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .entityTable td:last-child, td:first-child {
+            width: 50px;
+        }
+
+        .delete-btn {
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #dc3545;
+            padding: 5px 10px;
+        }
+
+        .delete-btn:hover {
+            background-color: #f8f9fa;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+<h1 class="title">Home</h1>
+
+<h3>Books</h3>
+<a th:href="@{/books/save}">
+    <button type="button">Add New Book</button>
+</a>
+<table class="entityTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Genres</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}" th:object="${book}">
+        <td th:text="*{id}">Book ID</td>
+        <td> <a th:href="@{/books/{id}(id=*{id})}" th:text="*{title}">Book title</a></td>
+        <td th:text="*{author.fullName}">Book author</td>
+        <td>
+            <span th:each="genre : ${book.genres}">
+                <span th:text="${genre.name}"></span>
+                <br>
+            </span>
+        </td>
+        <td>
+            <a href="edit.html" th:href="@{/books/edit(id=*{id})}">Edit</a>
+        </td>
+        <td>
+            <button type="button"
+                    class="delete-btn"
+                    th:onclick="|deleteBook(${book.id})|">
+                Delete
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Authors</h3>
+<table class="entityTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="author : ${authors}" th:object="${author}">
+        <td th:text="*{id}">1</td>
+        <td th:text="*{fullName}">John Doe</td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Genres</h3>
+<table class="entityTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="genre : ${genres}" th:object="${genre}">
+        <td th:text="*{id}">1</td>
+        <td th:text="*{name}">John Doe</td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    function deleteBook(bookId) {
+        if (confirm(`Are you sure you want to delete book?`)) {
+            fetch('/books?id=' + bookId, {
+                method: 'DELETE',
+                headers: {'Content-Type': 'application/json'},
+                redirect: "manual"
+            }).then(() => {window.location.reload()});
+        } else {
+            alert('Error deleting book');
+        }
+    }
+
+</script>
+</body>
+</html>

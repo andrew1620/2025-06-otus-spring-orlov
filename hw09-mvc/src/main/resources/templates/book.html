@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Home</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .title {
+            text-align: center;
+        }
+
+        .entityTable {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .entityTable tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .entityTable td:last-child, td:first-child {
+            width: 50px;
+        }
+
+    </style>
+</head>
+<body>
+<h1 class="title">Book</h1>
+
+<h3>Books</h3>
+<div class="row">
+    <a href="home.html" th:href="@{/home}"><button type="button">Home</button></a>
+</div>
+<table class="entityTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Genres</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:object="${book}">
+        <td th:text="*{id}">Book ID</td>
+        <td th:text="*{title}">Book title</td>
+        <td th:text="*{author.fullName}">Book author</td>
+        <td>
+            <span th:each="genre : ${book.genres}">
+                <span th:text="${genre.name}"></span>
+                <br>
+            </span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Comments</h3>
+<table class="entityTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Text</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="comment : ${comments}" th:object="${comment}">
+        <td th:text="*{id}">1</td>
+        <td th:text="*{title}">Comment</td>
+    </tr>
+    </tbody>
+</table>
+
+
+</body>
+</html>

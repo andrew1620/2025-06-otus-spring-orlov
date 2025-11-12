@@ -1,4 +1,4 @@
-package ru.otus.hw.commands;
+package ru.otus.hw.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
