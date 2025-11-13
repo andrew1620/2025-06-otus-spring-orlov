@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit person</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        #book-genres-select {
+            min-height: 100px;
+            width: 200px;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
+            margin-top: 5px;
+        }
+
+        .title {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h1 class="title">Create</h1>
+
+    <div class="row">
+        <label for="book-title-input">Title:</label>
+        <input id="book-title-input" name="title" type="text" value="Title 1"/>
+    </div>
+
+    <div class="row">
+        <label for="book-author-select">Author:</label>
+        <select id="book-author-select" name="authorId">
+        </select>
+    </div>
+
+    <div class="row">
+        <label for="book-genres-select">Genres:</label>
+        <select id="book-genres-select" multiple="multiple" name="genreIdList">
+        </select>
+        <div class="hint">Hold Ctrl/Cmd to select multiple genres</div>
+    </div>
+
+    <div class="row">
+        <button type="button" id="save-btn">Save</button>
+        <a href="/home">
+            <button type="button">Cancel</button>
+        </a>
+    </div>
+
+
+<script>
+    const bookTitleInput = document.getElementById("book-title-input");
+    const bookAuthorSelect = document.getElementById("book-author-select");
+    const bookGenresSelect = document.getElementById("book-genres-select");
+    const saveBtn = document.getElementById("save-btn");
+    saveBtn.onclick = createBook;
+
+    (async () => {
+
+        const authorsResponse = await fetch(`/authors`);
+        const authors = await authorsResponse.json();
+        const authorOptions = authors.map(author => (
+            `<option value="${author.id}">
+                    ${author.fullName}
+            </option>`
+        )).join("");
+
+        const genresResponse = await fetch(`/genres`);
+        const genres = await genresResponse.json();
+
+        const genreOptions = genres.map(genre => {
+            return `
+                <option value="${genre.id}">
+                    ${genre.name}
+                </option>
+            `;
+        }).join("");
+
+        bookAuthorSelect.innerHTML = authorOptions;
+        bookGenresSelect.innerHTML = genreOptions;
+
+    })()
+
+    async function createBook() {
+        const payload = {
+            title: bookTitleInput.value,
+            authorId: bookAuthorSelect.value,
+            genreIdList: Array.from(bookGenresSelect.selectedOptions).map(option => option.value)
+        }
+        await fetch(`/books`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+        window.location.href = "/home";
+    }
+</script>
+</body>
+</html>
