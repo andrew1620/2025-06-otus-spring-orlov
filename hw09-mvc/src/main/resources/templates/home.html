@@ -117,19 +117,5 @@
     </tr>
     </tbody>
 </table>
-<script>
-    function deleteBook(bookId) {
-        if (confirm(`Are you sure you want to delete book?`)) {
-            fetch('/books?id=' + bookId, {
-                method: 'DELETE',
-                headers: {'Content-Type': 'application/json'},
-                redirect: "manual"
-            }).then(() => {window.location.reload()});
-        } else {
-            alert('Error deleting book');
-        }
-    }
-
-</script>
 </body>
 </html>
