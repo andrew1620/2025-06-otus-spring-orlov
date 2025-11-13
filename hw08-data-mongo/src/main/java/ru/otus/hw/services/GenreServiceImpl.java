@@ -20,7 +20,6 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public List<Genre> findAllByIds(Set<String> ids) {
-        var a = genreRepository.findAllByIdIn(ids);
-        return a;
+        return genreRepository.findAllByIdIn(ids);
     }
 }

@@ -19,40 +19,29 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
 
-//    @PostConstruct
-//    private void init() {
-//        List<Book> all = bookRepository.findAll();
-//        System.out.println(all.size());
-//    }
-
     @Override
     public Optional<Comment> findById(String id) {
         return commentRepository.findById(id);
     }
 
-//    @Transactional
     @Override
     public Comment insert(String title, String bookId) {
         return save(null, title, bookId);
     }
 
-//    @Transactional
     @Override
     public Comment update(String id, String title, String bookId) {
         return save(id, title, bookId);
     }
 
-//    @Transactional
     @Override
     public void deleteById(String id) {
         commentRepository.deleteById(id);
     }
 
-//    @Transactional
     @Override
     public List<Comment> findByBookId(String bookId) {
-        var a = commentRepository.findByBookId(bookId);
-        return a;
+        return commentRepository.findByBookId(bookId);
     }
 
     private Comment save(String id, String title, String bookId) {

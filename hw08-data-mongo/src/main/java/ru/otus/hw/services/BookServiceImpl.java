@@ -25,8 +25,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Optional<Book> findById(String id) {
-        var a = bookRepository.findById(id);
-        return a;
+        return bookRepository.findById(id);
     }
 
     @Override
@@ -34,20 +33,17 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findAll();
     }
 
-//    @Transactional()
     @Override
     public Book insert(String title, String authorId, Set<String> genresIds) {
         var a = save(null, title, authorId, genresIds);
         return a;
     }
 
-//    @Transactional
     @Override
     public Book update(String id, String title, String authorId, Set<String> genresIds) {
         return save(id, title, authorId, genresIds);
     }
 
-//    @Transactional(rollbackFor = DeleteEntityException.class)
     @Override
     public void deleteById(String id) {
         bookRepository.deleteByIdCascade(id);

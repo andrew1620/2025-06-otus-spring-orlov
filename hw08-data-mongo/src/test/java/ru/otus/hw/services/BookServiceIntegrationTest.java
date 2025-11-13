@@ -2,24 +2,20 @@ package ru.otus.hw.services;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.models.Book;
 import ru.otus.hw.models.Genre;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataMongoTest
 @Import(BookServiceImpl.class)
@@ -60,9 +56,8 @@ public class BookServiceIntegrationTest {
     @Test
     void shouldCreateBook() {
         String title = "createdBook";
-        bookService.insert(title, "1", Set.of("1", "2"));
-        var books = mongoTemplate.find(Query.query(Criteria.where(title).is("1")), Book.class);
-        assertThat(books).isNotEmpty();
+        var book = bookService.insert(title, "1", Set.of("1"));
+        assertThat(book).isNotNull();
     }
 
     @DisplayName("Должна обновляться книга")
@@ -88,12 +83,11 @@ public class BookServiceIntegrationTest {
         assertThat(actualGenres).containsExactlyInAnyOrderElementsOf(genresIds.stream().toList());
     }
 
-    @DisplayName("Должна появиться ошибка IllegalArgumentException при добавлении книги")
+    @DisplayName("Должна появиться ошибка EntityNotFoundException при добавлении книги")
     @Test
     void shouldThrowExceptionWhenCreate() {
         String title = "createdBook";
-        bookService.insert(title, "1", Set.of("999", "333"));
-        var books = mongoTemplate.find(Query.query(Criteria.where(title).is("1")), Book.class);
-        assertThat(books).isNotEmpty();
+        assertThatThrownBy(() -> bookService.insert(title, "1", Set.of("999", "333")))
+                .isInstanceOf(EntityNotFoundException.class);
     }
 }

@@ -16,15 +16,14 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public List<Author> findAll() {
-        var items = authorRepository.findAll();
-        return items;
+        return authorRepository.findAll();
     }
 
     @Override
     public Optional<Author> findById(String id) {
         var author = authorRepository.findById(id);
         if (author.isEmpty()) {
-            throw new EntityNotFoundException("Author with id %d doesn't exist".formatted(id));
+            throw new EntityNotFoundException("Author with id %s doesn't exist".formatted(id));
         }
         return author;
     }
