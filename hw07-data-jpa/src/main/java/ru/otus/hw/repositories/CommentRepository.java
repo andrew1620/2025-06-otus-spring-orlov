@@ -17,8 +17,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Query(value = """
             SELECT c FROM Comment c
-                        JOIN FETCH c.book b
-                        JOIN FETCH b.author
-                        JOIN FETCH b.genres WHERE c.book.id = :bookId""")
+                        JOIN FETCH c.book b WHERE c.book.id = :bookId""")
     List<Comment> findByBookId(@Param("bookId") long bookId);
 }

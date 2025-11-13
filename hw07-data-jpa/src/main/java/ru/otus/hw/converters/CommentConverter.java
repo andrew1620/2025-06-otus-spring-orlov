@@ -13,6 +13,6 @@ public class CommentConverter {
         return "Id: %d, title: %s, book: {%s}".formatted(
                 comment.getId(),
                 comment.getTitle(),
-                bookConverter.bookToString(comment.getBook()));
+                comment.getBook().getId());
     }
 }
