@@ -32,7 +32,6 @@ public class JpaBookRepository implements BookRepository {
         TypedQuery<Book> query = em.createQuery("SELECT b FROM Book b WHERE id = :id", Book.class);
         query.setParameter("id", id);
         return query.getResultList().stream()
-                .filter(book -> book.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> new EntityNotFoundException("Book with id %d doesn't exist".formatted(id)));
     }

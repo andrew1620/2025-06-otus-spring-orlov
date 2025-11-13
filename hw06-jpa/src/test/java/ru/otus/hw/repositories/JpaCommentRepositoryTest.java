@@ -14,7 +14,6 @@ import ru.otus.hw.models.Book;
 import ru.otus.hw.models.Comment;
 import ru.otus.hw.models.Genre;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -27,8 +26,6 @@ class JpaCommentRepositoryTest {
 
     private static final long COMMENT_ID = 1L;
     private static final long BOOK_ID = 1L;
-    private static final long BOOK_AUTHOR_ID = 1L;
-    private static final long BOOK_GENRE_ID = 1L;
 
     @Autowired
     private EntityManager em;
