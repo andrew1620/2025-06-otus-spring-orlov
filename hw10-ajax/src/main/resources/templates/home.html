@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Home</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .title {
+            text-align: center;
+        }
+
+        .entityTable {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .entityTable tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .entityTable td:last-child, td:first-child {
+            width: 50px;
+        }
+
+        .delete-btn {
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #dc3545;
+            padding: 5px 10px;
+        }
+
+        .delete-btn:hover {
+            background-color: #f8f9fa;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+<h1 class="title">Home</h1>
+
+<h3>Books</h3>
+<a href="/book/create">
+    <button type="button">Add New Book</button>
+</a>
+<table class="entityTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Genres</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody class="books"></tbody>
+</table>
+
+<h3>Authors</h3>
+<table class="entityTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+    </tr>
+    </thead>
+    <tbody class="authors"></tbody>
+</table>
+
+<h3>Genres</h3>
+<table class="entityTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+    </tr>
+    </thead>
+    <tbody class="genres"></tbody>
+</table>
+<script>
+
+    const commentsElem = document.getElementsByClassName("books")[0];
+    fetch(`/books`)
+        .then(async response => {
+            const books = await response.json();
+            commentsElem.innerHTML = books.map(book => {
+                const genres = book.genres.map(genre => genre.name).join(", ");
+                return `
+                <tr>
+                    <td>${book.id}</td>
+                    <td><a href="/book/${book.id}">${book.title}</a></td>
+                    <td>${book.author.fullName}</td>
+                    <td>${genres}</td>
+                    <td>
+                        <a href="/book/edit/${book.id}">Edit</a>
+                    </td>
+                    <td>
+                        <button type="button"
+                                class="delete-btn"
+                                onclick="deleteBook(${book.id})">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                `
+            }).join("");
+        });
+
+    const authorsElem = document.getElementsByClassName("authors")[0];
+    fetch(`/authors`)
+        .then(async response => {
+            const authors = await response.json();
+            authorsElem.innerHTML = authors.map(author => {
+                return `
+                    <tr>
+                        <td>${author.id}</td>
+                        <td>${author.fullName}</td>
+                    </tr>
+                    `
+            }).join("");
+        });
+
+    const genresElem = document.getElementsByClassName("genres")[0];
+    fetch(`/genres`)
+        .then(async response => {
+            const genres = await response.json();
+            genresElem.innerHTML = genres.map(genre => {
+                return `
+                    <tr>
+                        <td>${genre.id}</td>
+                        <td>${genre.name}</td>
+                    </tr>
+                    `
+            }).join("");
+        });
+
+        function deleteBook(bookId) {
+            if (confirm(`Are you sure you want to delete book?`)) {
+                fetch('/books/' + bookId, {
+                    method: 'DELETE',
+                    headers: {'Content-Type': 'application/json'},
+                    redirect: "manual"
+                }).then(() => {
+                    window.location.reload()
+                });
+            } else {
+                alert('Error deleting book');
+            }
+        }
+
+</script>
+</body>
+</html>
