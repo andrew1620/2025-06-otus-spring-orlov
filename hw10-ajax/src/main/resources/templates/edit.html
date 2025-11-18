@@ -37,6 +37,7 @@
             text-align: center;
         }
     </style>
+    <script th:src="@{/js/common.js}"></script>
 </head>
 <body>
 <h1 class="title">Edit</h1>
@@ -82,10 +83,10 @@
     const bookId = getBookIdFromUrl();
     (async () => {
 
-        const response = await fetch(`/books/${bookId}`);
+        const response = await makeRequest(`/books/${bookId}`);
         const book = await response.json();
 
-        const authorsResponse = await fetch(`/authors`);
+        const authorsResponse = await makeRequest(`/authors`);
         const authors = await authorsResponse.json();
         const authorOptions = authors.map(author => (
             `<option
@@ -95,7 +96,7 @@
         </option>`
         )).join("");
 
-        const genresResponse = await fetch(`/genres`);
+        const genresResponse = await makeRequest(`/genres`);
         const genres = await genresResponse.json();
 
         const genreOptions = genres.map(genre => {
@@ -120,19 +121,21 @@
             authorId: bookAuthorSelect.value,
             genreIdList: Array.from(bookGenresSelect.selectedOptions).map(option => option.value)
         }
-        await fetch(`/books/${bookId}`, {
+        // await fetch(`/books/${bookId}`, {
+        //     method: 'PUT',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(payload)
+        // });
+        await makeRequest(`/books/${bookId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(payload)
-        });
+        })
         window.location.href = "/home";
-    }
-
-    function getBookIdFromUrl() {
-        const pathSegments = window.location.pathname.split('/');
-        return pathSegments[pathSegments.length - 1];
     }
 </script>
 </body>

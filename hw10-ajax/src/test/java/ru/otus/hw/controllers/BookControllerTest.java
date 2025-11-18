@@ -59,7 +59,7 @@ class BookControllerTest {
         Book book = new Book(1L, "Test Book", author, List.of(genre));
         List<Comment> comments = List.of(new Comment(1L, "Great book", book));
 
-        given(bookService.findById(1L)).willReturn(Optional.of(book));
+        given(bookService.findByIdThrowing(1L)).willReturn(book);
         given(commentService.findByBookId(1L)).willReturn(comments);
 
         mockMvc.perform(get("/books/1"))

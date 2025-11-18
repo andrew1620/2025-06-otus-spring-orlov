@@ -37,6 +37,7 @@
             text-align: center;
         }
     </style>
+    <script th:src="@{/js/common.js}"></script>
 </head>
 <body>
 <h1 class="title">Create</h1>
@@ -76,7 +77,7 @@
 
     (async () => {
 
-        const authorsResponse = await fetch(`/authors`);
+        const authorsResponse = await makeRequest(`/authors`);
         const authors = await authorsResponse.json();
         const authorOptions = authors.map(author => (
             `<option value="${author.id}">
@@ -84,7 +85,7 @@
             </option>`
         )).join("");
 
-        const genresResponse = await fetch(`/genres`);
+        const genresResponse = await makeRequest(`/genres`);
         const genres = await genresResponse.json();
 
         const genreOptions = genres.map(genre => {
@@ -106,7 +107,7 @@
             authorId: bookAuthorSelect.value,
             genreIdList: Array.from(bookGenresSelect.selectedOptions).map(option => option.value)
         }
-        await fetch(`/books`, {
+        await makeRequest(`/books`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -30,6 +30,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Book findByIdThrowing(long id) {
+        return findById(id).orElseThrow(() -> new EntityNotFoundException("Book with id: %s not found".formatted(id)));
+    }
+
+    @Override
     public List<Book> findAll() {
         return bookRepository.findAll();
     }

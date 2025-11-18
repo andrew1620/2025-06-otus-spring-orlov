@@ -28,6 +28,7 @@
         }
 
     </style>
+    <script th:src="@{/js/common.js}"></script>
 </head>
 <body>
 <h1 class="title">Book</h1>
@@ -66,7 +67,7 @@
 <script>
     const bookElem = document.getElementsByClassName("book")[0];
     const bookId = getBookIdFromUrl();
-    const books = fetch(`/books/${bookId}`)
+    const books = makeRequest(`/books/${bookId}`)
         .then(async response => {
             const book = await response.json();
             bookElem.innerHTML =
@@ -86,7 +87,7 @@
         })
 
     const commentsElem = document.getElementsByClassName("comments")[0];
-    fetch(`/comments/by-book/${bookId}`)
+    makeRequest(`/comments/by-book/${bookId}`)
         .then(async response => {
             const comments = await response.json();
             commentsElem.innerHTML = comments.map(comment => (
@@ -97,10 +98,10 @@
             ));
         })
 
-    function getBookIdFromUrl() {
-        const pathSegments = window.location.pathname.split('/');
-        return pathSegments[pathSegments.length - 1];
-    }
+    // function getBookIdFromUrl() {
+    //     const pathSegments = window.location.pathname.split('/');
+    //     return pathSegments[pathSegments.length - 1];
+    // }
 </script>
 </body>
 </html>

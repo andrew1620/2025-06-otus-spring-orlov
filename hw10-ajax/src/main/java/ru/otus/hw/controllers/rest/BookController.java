@@ -34,7 +34,7 @@ public class BookController {
 
     @GetMapping("books/{id}")
     public Book findBookById(Model model, @PathVariable("id") long id) {
-        Book book = bookService.findById(id).get();
+        Book book = bookService.findByIdThrowing(id);
         List<Comment> comments = commentService.findByBookId(book.getId());
         return book;
     }
