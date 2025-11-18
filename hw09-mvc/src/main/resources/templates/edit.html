@@ -39,12 +39,12 @@
 </head>
 <body>
 <h1 class="title">Edit</h1>
-<form id="edit-form" action="edit.html" th:method="put" th:action="@{/books(id=${book.id})}"
+<form id="edit-form" action="edit.html" th:method="post" th:action="@{/books/edit-book}"
       th:object="${book}">
 
     <div class="row">
         <label for="id-input">ID:</label>
-        <input id="id-input" type="text" readonly="readonly" value="1" th:value="*{id}"/>
+        <input id="id-input" type="text" name="id" readonly="readonly" value="1" th:value="*{id}"/>
     </div>
 
     <div class="row">

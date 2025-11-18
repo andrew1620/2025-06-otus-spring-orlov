@@ -64,7 +64,7 @@ public class BookController {
 
     @GetMapping("books/edit")
     public String editBook(@RequestParam("id") long id, Model model) {
-        Book book = bookService.findById(id).get();
+        Book book = bookService.findByIdThrowing(id);
 
         List<Author> authors = authorService.findAll();
         List<Genre> genres = genreService.findAll();
@@ -75,7 +75,7 @@ public class BookController {
         return "edit";
     }
 
-    @PutMapping("books")
+    @PostMapping("books/edit-book")
     public String updateBook(@ModelAttribute("book") BookDto dto) {
         var savedBook = bookService.update(dto.getId(), dto.getTitle(), dto.getAuthorId(), dto.getGenreIdList());
         return "redirect:/home";

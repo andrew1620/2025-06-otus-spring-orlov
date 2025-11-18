@@ -25,7 +25,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -103,7 +102,7 @@ class BookControllerIntegrationTest {
         Author author = new Author(1L, "Test Author");
         Genre genre = new Genre(1L, "Test Genre");
 
-        given(bookService.findById(1L)).willReturn(Optional.of(book));
+        given(bookService.findByIdThrowing(1L)).willReturn(book);
         given(authorService.findAll()).willReturn(List.of(author));
         given(genreService.findAll()).willReturn(List.of(genre));
 
@@ -126,7 +125,7 @@ class BookControllerIntegrationTest {
         Book updatedBook = new Book(1L, "Updated Book", null, null);
         given(bookService.update(anyLong(), anyString(), anyLong(), any())).willReturn(updatedBook);
 
-        mockMvc.perform(put("/books")
+        mockMvc.perform(post("/books/edit-book")
                         .param("id", "1")
                         .param("title", "Updated Book")
                         .param("authorId", "1")
