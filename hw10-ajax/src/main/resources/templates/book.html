@@ -87,7 +87,7 @@
         })
 
     const commentsElem = document.getElementsByClassName("comments")[0];
-    makeRequest(`/comments/by-book/${bookId}`)
+    makeRequest(`/books/${bookId}/comments`)
         .then(async response => {
             const comments = await response.json();
             commentsElem.innerHTML = comments.map(comment => (
@@ -97,11 +97,6 @@
                 </tr>`
             ));
         })
-
-    // function getBookIdFromUrl() {
-    //     const pathSegments = window.location.pathname.split('/');
-    //     return pathSegments[pathSegments.length - 1];
-    // }
 </script>
 </body>
 </html>

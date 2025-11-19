@@ -17,7 +17,7 @@ public class CommentController {
     private final CommentService commentService;
 
 
-    @GetMapping("comments/by-book/{id}")
+    @GetMapping("books/{id}/comments")
     public List<Comment> findCommentsByBookId(@PathVariable("id") long id) {
         return commentService.findByBookId(id);
     }

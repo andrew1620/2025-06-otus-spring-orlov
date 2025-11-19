@@ -37,7 +37,7 @@ class CommentControllerTest {
 
         given(commentService.findByBookId(1L)).willReturn(comments);
 
-        mockMvc.perform(get("/comments/by-book/1"))
+        mockMvc.perform(get("/books/1/comments"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].id").value(1))
@@ -50,7 +50,7 @@ class CommentControllerTest {
     void findCommentsByBookId_WhenNoComments_ShouldReturnEmptyList() throws Exception {
         given(commentService.findByBookId(1L)).willReturn(List.of());
 
-        mockMvc.perform(get("/comments/by-book/1"))
+        mockMvc.perform(get("/books/1/comments"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(0));
     }

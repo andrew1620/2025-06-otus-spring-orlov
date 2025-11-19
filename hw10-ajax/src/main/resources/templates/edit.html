@@ -121,13 +121,7 @@
             authorId: bookAuthorSelect.value,
             genreIdList: Array.from(bookGenresSelect.selectedOptions).map(option => option.value)
         }
-        // await fetch(`/books/${bookId}`, {
-        //     method: 'PUT',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(payload)
-        // });
+
         await makeRequest(`/books/${bookId}`, {
             method: 'PUT',
             headers: {
