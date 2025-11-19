@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit person</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        #book-genres-select {
+            min-height: 100px;
+            width: 200px;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        .title {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h1 class="title">Edit</h1>
+<form id="edit-form" action="edit.html" th:method="post" th:action="@{/books/edit-book}"
+      th:object="${book}">
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" type="text" name="id" readonly="readonly" value="1" th:value="*{id}"/>
+    </div>
+
+    <div class="row">
+        <label for="book-title-input">Title:</label>
+        <input id="book-title-input" name="title" type="text" value="Title 1" th:value="*{title}"/>
+    </div>
+
+    <div class="row">
+        <label for="book-author-select">Author:</label>
+        <select id="book-author-select" name="authorId">
+            <option th:each="author : ${authors}"
+                    th:value="${author.id}"
+                    th:text="${author.fullName}"
+                    th:selected="${author.id == book.author.id}">
+            </option>
+        </select>
+    </div>
+
+    <div class="row">
+        <label for="book-genres-select">Genres:</label>
+        <select id="book-genres-select" multiple="multiple" name="genreIdList">
+            <option th:each="genre : ${genres}"
+                    th:value="${genre.id}"
+                    th:text="${genre.name}"
+                    th:selected="${#lists.contains(book.genres, genre)}">
+            </option>
+        </select>
+        <div class="hint">Hold Ctrl/Cmd to select multiple genres</div>
+    </div>
+
+    <div class="row">
+        <button type="submit">Save</button>
+        <a href="home.html" th:href="@{/home}"><button type="button">Cancel</button></a>
+    </div>
+
+</form>
+
+</body>
+</html>
